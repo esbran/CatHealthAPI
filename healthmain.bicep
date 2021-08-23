@@ -32,9 +32,6 @@ module healthapi 'modules/healthapi.bicep' = {
     name: name
     myTags: myTags
     storageAccountName: storage.outputs.storageAccountName
-    eventHubName: eventHub.outputs.eventHubName
-    consumerGroup: eventHub.outputs.consumerGroup
-    fullyQualifiedEventHubNamespace: eventHub.outputs.fullyQualifiedEventHubNamespace
     eventhubDetails: eventHub.outputs.eventhubdetails
   }
 }

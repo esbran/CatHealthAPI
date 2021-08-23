@@ -3,9 +3,6 @@ targetScope = 'resourceGroup'
 param name string
 param storageAccountName string
 param myTags object
-param eventHubName string
-param consumerGroup string
-param fullyQualifiedEventHubNamespace string
 param eventhubDetails object
 param authorityUrl string = '${environment().authentication.loginEndpoint}${subscription().tenantId}'
 param audienceUrl string = 'https//${name}healthapi-${name}healthapi-fhir.fhir.azurehealthcareapis.com'
@@ -52,25 +49,83 @@ resource healthapi 'Microsoft.HealthcareApis/workspaces@2021-06-01-preview' = {
   }
 
   resource healthApiDicom 'dicomservices@2021-06-01-preview' = {
-    name: '${name}healtapi-dicom'
+    name: '${name}healhtapi-dicom'
     location: resourceGroup().location
   }
 
-  resource healtApiIot 'iotconnectors@2021-06-01-preview' = {
-    name: '${name}healtapi-iot'
+  resource healthApiIot 'iotconnectors@2021-06-01-preview' = {
+    name: '${name}healthapi-iot'
     location: resourceGroup().location
     properties: {
       ingestionEndpointConfiguration:{
-        eventHubName: eventHubName
-        consumerGroup: consumerGroup
-        fullyQualifiedEventHubNamespace: fullyQualifiedEventHubNamespace
+        eventHubName: eventhubDetails.eventHubName  //eventHubName
+        consumerGroup: eventhubDetails.consumerGroup
+        fullyQualifiedEventHubNamespace: eventhubDetails.fullyQualifiedEventHubNamespace
+      }
+      deviceMapping: {
+        content: {
+          templateType: 'CollectionContent'
+          template: [
+          {
+            templateType: 'JsonPathContent'
+            template: {
+              typeName: 'heartrate'
+              typeMatchExpression: '$..[?(@heartrate)]'
+              deviceIdExpression: '$.deviceid'
+              timestampExpression: '$.measurementdatetime'
+              values: [{
+                required: 'true'
+                valueExpression: '$.heartrate'
+                valueName: 'Heart rate'
+              }            
+            ]
+            }
+          }
+        ]
+        }
+      }
+    }
+    resource iotDestination 'fhirdestinations@2021-06-01-preview' = {
+			name: '${name}-iotdestination'
+			location: resourceGroup().location
+			
+			properties: {
+				resourceIdentityResolutionType: 'Create'
+				fhirServiceResourceId: healthApiFihr.id
+				fhirMapping: {
+          content: {
+            templateType: 'CollectionFhirTemplate'
+            template: [
+            {
+              templateType: 'CodeValueFhir'
+              template: {
+                codes: [
+                  {
+                    code: '8867-4'
+                    system: 'http://loinc.org'
+                    display: 'Heart rate'
+                  }
+                  ]
+                  periodInterval: 60
+                  typeName: 'heartrate'
+                  value: {
+                    defaultPeriod: 5000
+                    unit: 'count/min'
+                    valueName: 'hr'
+                    valueType: 'SampledData'
+                  }
+                }
+              }
+              ]
+           }        
+        } 
       }
     }
   }
 }
 
 
-output healtapiout string = '${name}healtapi'
+output healthapiout string = '${name}healthapi'
 
 
 
