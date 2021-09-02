@@ -5,7 +5,7 @@ Initiate the deployment wizard using this button:
 
 ## Post deployment 
 Get the FHIR endpoint:
-![FHIR screenshot of the endpoint](doc\img\fhir_url_screenshot.jpg "FHIR Endpoint")
+![FHIR screenshot of the endpoint](doc/img/fhir_url_screenshot.jpg "FHIR Endpoint")
 
 ###Validate the deployment: 
 Ensure you are connected to the correct tenant and subscription
