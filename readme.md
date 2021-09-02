@@ -84,7 +84,7 @@ $FhirGetMalePatients = Invoke-RestMethod "$fhirservice/Patient?gender:not=female
     -Headers $headers 
 Write-Host $FhirGetPatient
 ```
-Other exsamples can be found here: [FHIR Search](https://github.com/esbran/CatHealthAPI/blob/5b85cdefeb52c58347f58555da9a2c6c325dd1ff/fhirget.ps1)
+Other examples can be found here: [FHIR Search](https://github.com/esbran/CatHealthAPI/blob/5b85cdefeb52c58347f58555da9a2c6c325dd1ff/fhirget.ps1)
 
 > ### Known issues
 > There are a few known issues:
