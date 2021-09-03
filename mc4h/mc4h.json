@@ -38,7 +38,7 @@
                             "type": "Microsoft.Common.TextBlock",
                             "visible": true,
                             "options": {
-                                "text": "Microsoft Cloud for Healthcare will create the resource group and deploy the Healthcare APIs with additiona, optional services into the selected subscription.",
+                                "text": "Microsoft Cloud for Healthcare will create the resource group and deploy the Healthcare APIs with additional, optional services into the selected subscription.",
                                 "link": {
                                     "label": "Learn more",
                                     "uri": "https://docs.microsoft.com/azure/cloud-adoption-framework/ready/enterprise-scale/management-group-and-subscription-organization"
@@ -449,6 +449,78 @@
 										"required": true
 									},
 									"visible": "[equals(steps('azureSetup').iot.enableIotConnector, 'Yes')]"
+								}
+							]
+						},
+                        {
+                            "name": "healthBot",
+                            "type": "Microsoft.Common.Section",
+                            "label": "HealthBot",
+                            "elements": [
+								{
+									"name": "healthbotinfo",
+									"type": "Microsoft.Common.TextBlock",
+									"visible": true,
+									"options": {
+										"icon": "Info",
+										"text": "AI-powered virtual health assistant, that help to improve processes and reduce costs. It allows you to offer your users intelligent and personalized access to health-related information and interactions through a natural conversation experience",
+										"uri": "https://docs.microsoft.com/en-us/azure/health-bot/"
+									}
+								},
+								{
+									"name": "enableHealthBot",
+									"type": "Microsoft.Common.OptionsGroup",
+									"label": "Enable HealthBot",
+									"defaultValue": "Yes",
+									"toolTip": "",
+									"constraints": {
+									"allowedValues": [
+                                            {
+                                                "label": "Yes",
+                                                "value": "Yes"
+                                            },
+                                            {
+                                                "label": "No",
+                                                "value": "No"
+                                            }
+                                        ],
+										"required": true
+									},
+									"visible": true
+								},
+								{
+									"name": "healthBotName",
+									"type": "Microsoft.Common.TextBox",
+									"label": "HealthBot name",
+									"defaultValue": "",
+									"toolTip": "",
+									"constraints": {
+										"required": true,
+										"regex": "",
+										"validationMessage": ""
+									},
+									"visible": "[equals(steps('azureSetup').healthBot.enableHealthBot, 'Yes')]"
+								},
+                                {
+									"name": "healthBotSku",
+									"type": "Microsoft.Common.OptionsGroup",
+									"label": "HealthBot SKU",
+									"defaultValue": "Yes",
+									"toolTip": "",
+									"constraints": {
+									"allowedValues": [
+                                            {
+                                                "label": "F0",
+                                                "value": "F0"
+                                            },
+                                            {
+                                                "label": "S1",
+                                                "value": "S1"
+                                            }
+                                        ],
+										"required": true
+									},
+									"visible": "[equals(steps('azureSetup').healthBot.enableHealthBot, 'Yes')]"
 								}
 							]
 						},

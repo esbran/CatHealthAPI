@@ -103,6 +103,22 @@
         "userPrincipalId": {
             "type": "string",
             "defaultValue": ""
+        },
+        "healthBotName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "healthBotSku": {
+            "type": "string",
+            "defaultValue": "F0"
+        },
+        "enableHealthBot": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "defaultValue": "No"
         }
     },
     "variables": {
@@ -114,6 +130,7 @@
         "storageDeploymentName": "[concat('MC4H-Storage-', parameters('location'))]",
         "workspaceDeploymentName": "[concat('MC4H-Workspace-', parameters('location'))]",
         "eventHubDeploymentName": "[concat('MC4H-EventHub-', parameters('location'))]",
+        "healthBotDeploymentName": "[concat('MC4H-HealthBot-', parameters('location'))]",
         "fhirRbacDeploymentName": "[concat('MC4H-Fhir-RBAC-', parameters('location'))]",
         "fhirRbacDataDeploymentName": "[concat('MC4H-Data-RBAC-', parameters('location'))]",
         "userRbacDataDeploymentName": "[concat('MC4H-User-RBAC-', parameters('location'))]",
@@ -127,6 +144,7 @@
         "storageDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/storageAccount.json')]",
         "workspaceDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/logAnalytics.json')]",
         "eventHubDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/eventHub.json')]",
+        "healthBotDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/healthBot.json')]",
         "fhirRbacDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/roleAssignments.json')]",
         "fhirDiagnosticsDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/fhirDiagnostics.json')]",
         "eventHubDiagnosticsDeployment": "[uri(deployment().properties.templateLink.uri, 'infra/eventHubDiagnostics.json')]",
@@ -578,6 +596,34 @@
                         "enabled": true
                     }
                 ]
+            }
+        },
+            {
+            "condition": "[equals(parameters('enableHealthBot'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "name": "[variables('healthBotDeploymentName')]",
+            "resourceGroup": "[parameters('rgName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/resourceGroups', parameters('rgName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('healthBotDeployment')]"
+                },
+                "parameters": {
+                    "healthbotname": {
+                        "value": "[concat(variables('apiName'), '-bot')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "sku": {
+                        "value": "[parameters('healthBotSku')]"
+                    }
+                }
             }
         }
     ]
