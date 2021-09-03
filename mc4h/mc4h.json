@@ -189,19 +189,6 @@
                                     },
                                     "visible": "[equals(steps('azureSetup').fhir.enableFhirService, 'Yes')]"
                                 },
-                                {
-                                    "name": "fhirAccessPolicies",
-                                    "type": "Microsoft.Common.TextBox",
-                                    "label": "FHIR access policies",
-                                    "defaultValue": "[[]",
-                                    "toolTip": "",
-                                    "constraints": {
-                                        "required": false,
-                                        "regex": "",
-                                        "validationMessage": ""
-                                    },
-                                    "visible": "[equals(steps('azureSetup').fhir.enableFhirService, 'Yes')]"
-                                },
 								{
 									"name": "fhirVersion",
 									"type": "Microsoft.Common.DropDown",
@@ -503,7 +490,7 @@
 								},
                                 {
 									"name": "healthBotSku",
-									"type": "Microsoft.Common.OptionsGroup",
+									"type": "Microsoft.Common.DropDown",
 									"label": "HealthBot SKU",
 									"defaultValue": "Yes",
 									"toolTip": "",
@@ -609,7 +596,6 @@
                 "location": "[steps('azureSetup').location]",
                 "enableFhirService": "[steps('azureSetup').fhir.enableFhirService]",
                 "fhirName": "[steps('azureSetup').fhir.fhirName]",
-                "fhirAccessPolicies": "[steps('azureSetup').fhir.fhirAccessPolicies]",
                 "fhirVersion": "[steps('azureSetup').fhir.fhirVersion]",
                 "enableSmartProxyForFhir": "[steps('azureSetup').fhir.enableSmartProxyForFhir]",
                 "enableDicomService": "[steps('azureSetup').dicom.enableDicomService]",
@@ -618,6 +604,8 @@
                 "enableMonitoring": "[steps('azureSetup').azMon.enableMonitoring]",
                 "enableEventHub": "[steps('azureSetup').iot.enableEventHub]",
                 "enableIotConnector": "[steps('azureSetup').iot.enableIotConnector]",
+				"enableHealthBot": "[steps('azureSetup').healthBot.enableHealthBot]",
+				"healthBotName": "[steps('azureSetup').healthBot.healthBotName]",
                 "iotConnectorName": "[steps('azureSetup').iot.iotName]",
                 "userPrincipalId": "[steps('azureSetup').apiWorkspace.userName]",
                 "enableManagedIdentity": "[coalesce(steps('azureSetup').fhir.enableManagedIdentityFhir, steps('azureSetup').iot.enableManagedIdentityIot, '')]"

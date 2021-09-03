@@ -598,7 +598,7 @@
                 ]
             }
         },
-            {
+        {
             "condition": "[equals(parameters('enableHealthBot'), 'Yes')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
